@@ -61,11 +61,12 @@
             {{#preprint-form-section id='preprint-form-basics' name=name allowOpen=uploadValid errorAction=(action 'error')}}
                 {{preprint-form-header name=name valid=basicsValid}}
                 {{#preprint-form-body class='row'}}
+                <form onkeyup={{action 'saveSingleBasicField'}}>
                     <div class="col-md-6">
-                        <label>
-                            <span class="required">Title:</span>
-                            {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=basicsTitle}}
-                        </label>
+                            <label>
+                                <span class="required">Title:</span>
+                                {{validated-input model=this valuePath='basicsTitle' placeholder="Title" value=basicsTitle}}
+                            </label>
                         <label>
                             DOI:
                             {{validated-input model=this valuePath='basicsDOI' placeholder="DOI" value=basicsDOI}}
@@ -88,7 +89,7 @@
                             </div>
                         </div>
                     </div>
-
+                </form>
                 {{/preprint-form-body}}
             {{/preprint-form-section}}
         {{/with}}
