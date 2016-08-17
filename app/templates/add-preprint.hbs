@@ -61,7 +61,7 @@
             {{#preprint-form-section id='preprint-form-basics' name=name allowOpen=uploadValid errorAction=(action 'error')}}
                 {{preprint-form-header name=name valid=basicsValid}}
                 {{#preprint-form-body class='row'}}
-                <form onkeyup={{action 'saveSingleBasicField'}}>
+                <form onkeyup={{action 'saveBasicFields'}}>
                     <div class="col-md-6">
                             <label>
                                 <span class="required">Title:</span>
@@ -85,7 +85,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="pull-right">
-                                <button {{action 'saveBasics'}} class="btn btn-primary" disabled={{unless basicsValid true}} >Save and continue</button>
+                                <button {{action 'saveBasicsAndContinue'}} class="btn btn-primary" disabled={{unless basicsValid true}} >Save and continue</button>
                             </div>
                         </div>
                     </div>

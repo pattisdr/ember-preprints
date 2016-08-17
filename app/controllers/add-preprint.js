@@ -298,7 +298,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
             this.set('selectedFile', 'dummy value'); // FIXME: Placeholder to test expansion validation
             this.get('toast').info('File uploaded!');
         },
-        saveSingleBasicField() {
+        saveBasicFields() {
             // Saves basics field if form is validated
             var save = function() {
                 let node = this.get('selectedNode');
@@ -316,7 +316,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, {
         /*
           Basics section
          */
-        saveBasics() {
+        saveBasicsAndContinue() {
             // Save the model associated with basics field, then advance to next panel
             // If save fails, do not transition
             let node = this.get('selectedNode');
