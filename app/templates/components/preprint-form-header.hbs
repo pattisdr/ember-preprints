@@ -48,7 +48,9 @@
             {{else if (eq name 'Discipline')}}
                 {{#if subjects}}
                     {{#each subjects as |subject|}}
-                        <span class="subject-preview">{{subject.text}} </span>
+                        {{#each subject as |subj|}}
+                            <span class="subject-preview">{{subj.text}} </span>
+                        {{/each}}
                     {{/each}}
                 {{else}}
                     <span>{{t "global.none"}}</span>

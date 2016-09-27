@@ -95,6 +95,7 @@
                 </div>
             {{else if (eq existingState _existingState.NEWFILE)}}
                 {{file-uploader
+                    setPrimaryFile=setPrimaryFile
                     changeInitialState=changeInitialState
                     nextUploadSection=nextUploadSection
                     changeExistingState = (action "changeExistingState")

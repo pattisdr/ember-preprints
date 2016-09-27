@@ -238,9 +238,13 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             var node = this.get('node');
             if (node.title !== this.get('nodeTitle')) {
                 node.set('title', this.get('nodeTitle'));
-                node.save().then(() => {
-                    this.send('finishUpload');
-                });
+                node.save()
+                    .then(() => this.send('setPrimaryFile'))
+                    .then(() => {
+                        this.send('finishUpload');
+                        this.get('toast').info('Preprint file saved!');
+                    })
+                    .catch(() => this.get('toast').error('Could not save information; please try again'));
             } else {
                 this.send('finishUpload');
             }
@@ -258,12 +262,17 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                     this.get('fileManager').copy(this.get('selectedFile'), osfstorage, {data: {resource: child.id}}).then((copiedFile) => {
                         this.set('selectedFile', copiedFile);
                     });
-                }).then(() => {
-                    this.get('toast').info('File copied to component!');
-                    this.send('finishUpload');
-                }, () => {
-                    this.get('toast').info('Could not create component.');
-                });
+                })
+                    .then(() => {
+                        this.send('setPrimaryFile');
+                    })
+                    .then(() => {
+                        this.send('finishUpload');
+                        this.get('toast').info('Preprint file saved!');
+                    })
+                    .catch(() => {
+                        this.get('toast').info('Could not save information; please try again.');
+                    });
             });
         },
         editTitleNext(section) {
@@ -307,6 +316,15 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 }
             }
         },
+        setPrimaryFile() {
+            let model = this.get('model');
+            model.setProperties({
+                primaryFile: this.get('selectedFile.id'),
+                node: this.get('node.id'),
+                provider: 'osf'
+            });
+            return model.save();
+        },
         /*
           Basics section
          */
@@ -316,13 +334,28 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             let node = this.get('node');
             node.set('description', this.get('basicsAbstract'));
             node.save()
+                .then(() => {
+                    var model = this.get('model');
+                    if (model.get('doi') === '') {
+                        model.set('doi', undefined);
+                    }
+                    model.save();
+                })
                 .then(() => this.send('next', this.get('_names.2')))
                 .catch(()=> this.send('error', 'Could not save information; please try again'));
         },
 
-        saveSubjects(subjects) {
+        setSubjects(subjects) {
+            var model = this.get('model');
+            model.set('subjects', subjects);
+        },
+
+        saveSubjects() {
             // If save fails, do not transition
-            this.set('model.subjects', subjects);
+            var model = this.get('model');
+            model.save()
+                .then(() => this.send('subjectsNext'))
+                .catch(() => this.send('error', 'Could not save information; please try again'));
         },
 
         subjectsNext() {
@@ -380,30 +413,16 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
             this.toggleProperty('showModalSharePreprint');
         },
         savePreprint() {
-            // Converts 'node' into a preprint, with its primaryFile as the 'selectedFile'.
+            // Sets preprint isPublished is true. This is the final step in creating a preprint
+            // and will allow the preprint to be searchable.
             // TODO: Check validation status of all sections before submitting
             // TODO: Make sure subjects is working so request doesn't get rejected
             // TODO: Test and get this code working
             let model = this.get('model');
-            model.setProperties({
-                id: this.get('node.id'),
-                primaryFile: this.get('selectedFile')
-            });
             this.set('savingPreprint', true);
-            if (model.get('doi') === '') {
-                model.set('doi', undefined);
-            }
+            model.set('isPublished', true);
+
             model.save()
-                // Ember data is not worth the time investment currently
-                .then(() =>  this.store.adapterFor('preprint').ajax(model.get('links.relationships.providers.links.self.href'), 'PATCH', {
-                    data: {
-                        data: [{
-                            type: 'preprint_providers',
-                            id: config.PREPRINTS.provider,
-                        }]
-                    }
-                }))
-                .then(() => model.get('providers'))
                 .then(() => this.transitionToRoute('content', model))
                 .catch(() => this.send('error', 'Could not save preprint; please try again later'));
         },

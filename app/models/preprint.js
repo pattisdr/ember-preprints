@@ -24,11 +24,14 @@ export default OsfModel.extend({
     abstract: DS.attr('string'),
     tags: DS.attr(),
     doi: DS.attr('string'),
+    node: DS.attr('string'),
+    primaryFile: DS.attr('string'),
+    provider: DS.attr('string'),
 
     // Relationships
-    primaryFile: DS.belongsTo('file', { inverse: null }),
+    // primaryFile: DS.belongsTo('file', { inverse: null }),
     files: DS.hasMany('file-providers', { inverse: null }),
-    providers: DS.hasMany('preprint-provider', { inverse: 'preprints', async: true }),
+    // providers: DS.hasMany('preprint-provider', { inverse: 'preprints', async: true }),
 
     contributors: DS.hasMany('contributors', {
         allowBulkUpdate: true,

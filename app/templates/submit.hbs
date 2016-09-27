@@ -47,6 +47,7 @@
                                                     finishUpload=(action 'finishUpload')
                                                     clearDownstreamFields=(action 'clearDownstreamFields')
                                                     nextUploadSection=(action 'nextUploadSection')
+                                                    setPrimaryFile=(action 'setPrimaryFile')
                                                     newNodeNewFile=true
                                                     startState=_State.START
                                                     nodeTitle=nodeTitle
@@ -70,6 +71,7 @@
                                                   createComponentCopyFile=(action "createComponentCopyFile")
                                                   selectFile=(action "selectExistingFile")
                                                   highlightSuccessOrFailure=(action 'highlightSuccessOrFailure')
+                                                  setPrimaryFile=(action 'setPrimaryFile')
                                                   startState=_State.START
                                                   nodeTitle=nodeTitle
                                                   currentUser=user
@@ -102,12 +104,12 @@
                             {{#preprint-form-body}}
                                 <p class="m-b-lg small">{{t "submit.body.subjects_description"}}</p>
 
-                                {{subject-picker save=(action 'saveSubjects')}}
+                                {{subject-picker save=(action 'setSubjects')}}
 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-                                            <button {{action 'subjectsNext'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >{{t "submit.body.save_continue"}}</button>
+                                            <button {{action 'saveSubjects'}} class="btn btn-primary" disabled={{unless disciplineValid true}} >{{t "submit.body.save_continue"}}</button>
                                         </div>
                                     </div>
                                 </div>

@@ -154,14 +154,15 @@ export default Ember.Component.extend({
 
             if (Math.floor(file.xhr.status / 100) === 2) {
                 // Success
-                this.get('toast').info('Preprint uploaded!');
-
                 let resp = JSON.parse(file.xhr.response);
                 this.get('store')
                     .findRecord('file', resp.data.id.split('/')[1])
                     .then(file => {
                         this.set('osfFile', file);
-                        this.sendAction('finishUpload');
+                        this.attrs.setPrimaryFile().then(() => {
+                            this.sendAction('finishUpload');
+                            this.get('toast').info('Preprint file uploaded!');
+                        }).catch(() => this.get('toast').error('Could not save information; please try again.'));
                     });
             } else {
                 //Failure
