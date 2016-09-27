@@ -77,6 +77,7 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
     parentNode: null, // If component created, parentNode will be defined
     convertProjectConfirmed: false, // User has confirmed they want to convert their existing OSF project into a preprint,
     convertOrCopy: null, // Will either be 'convert' or 'copy' depending on whether user wants to use existing component or create a new component.
+    shareButtonDisabled: false,
 
     isTopLevelNode: Ember.computed('node', function() {
         // Returns true if node is a top-level node
@@ -405,7 +406,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 }))
                 .then(() => model.get('providers'))
                 .then(() => this.transitionToRoute('content', model))
-                .catch(() => this.send('error', 'Could not save preprint; please try again later'));
+                .catch(() => {
+                    this.send('error', 'Could not save preprint; please try again later');
+                    this.set('shareButtonDisabled', false);
+                });
         },
     }
 });

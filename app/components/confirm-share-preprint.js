@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     isOpen: false,
-    shareButtonDisabled: false,
     actions: {
         close() {
             this.set('isOpen', false);
