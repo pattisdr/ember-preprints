@@ -2,17 +2,29 @@ import OsfSerializer from 'ember-osf/serializers/osf-serializer';
 
 export default OsfSerializer.extend({
     serialize(snapshot) {
-        // Normal OSF serializer strips out relationships. We need to add back primaryFile for this endpoint
+        // Normal OSF serializer strips out relationships. We need to add back primaryFile, node, and provider for this endpoint
+        //TODO Do not hardcode provider
         let res = this._super(...arguments);
-        // res.data.relationships = {
-        //     primary_file: {
-        //         data: {
-        //             id: snapshot.belongsTo('primaryFile', { id: true }),
-        //             type: 'file'
-        //         }
-        //     }
-        // };
-        //
+        res.data.relationships = {
+            primary_file: {
+                data: {
+                    id: snapshot.belongsTo('primaryFile', { id: true }),
+                    type: 'file'
+                }
+            },
+            node: {
+                data: {
+                    id: snapshot.belongsTo('node', { id: true }),
+                    type: 'nodes'
+                }
+            },
+            provider: {
+                data: {
+                    id: 'osf',
+                    type: 'provider'
+                }
+            },
+        };
 
         if (res.data.attributes && 'subjects' in snapshot.record.changedAttributes())
             // TODO: This should not be in the serializer. It is the responsibility of the person creating a record to give the correct data format.

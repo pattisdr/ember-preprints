@@ -318,11 +318,9 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
         },
         setPrimaryFile() {
             let model = this.get('model');
-            model.setProperties({
-                primaryFile: this.get('selectedFile.id'),
-                node: this.get('node.id'),
-                provider: 'osf'
-            });
+            model.set('primaryFile', this.get('selectedFile'));
+            model.set('node', this.get('node'));
+            model.set('provider', 'osf');
             return model.save();
         },
         /*
