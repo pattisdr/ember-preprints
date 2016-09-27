@@ -164,7 +164,7 @@
                                         <p> </p>
                                         <button class="btn btn-primary btn-lg m-t-md" disabled={{unless allSectionsValid true}} {{action 'toggleSharePreprintModal'}}>Share</button>
                                         <div>
-                                            {{confirm-share-preprint isOpen=showModalSharePreprint savePreprint=(action 'savePreprint')}}
+                                            {{confirm-share-preprint shareButtonDisabled=shareButtonDisabled isOpen=showModalSharePreprint savePreprint=(action 'savePreprint')}}
                                         </div>
                                     </div>
                                 </div>

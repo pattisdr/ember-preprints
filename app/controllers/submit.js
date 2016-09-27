@@ -357,7 +357,10 @@ export default Ember.Controller.extend(BasicsValidations, NodeActionsMixin, Tagg
                 }))
                 .then(() => model.get('providers'))
                 .then(() => this.transitionToRoute('content', model))
-                .catch(() => this.send('error', 'Could not save preprint; please try again later'));
+                .catch(() => {
+                    this.send('error', 'Could not save preprint; please try again later');
+                    this.set('shareButtonDisabled', false);
+                });
         },
     }
 });
