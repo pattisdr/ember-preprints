@@ -3,6 +3,8 @@ import config from 'ember-get-config';
 
 export default Ember.Service.extend({
     store: Ember.inject.service(),
+    session: Ember.inject.service(),
+
     id: config.PREPRINTS.provider,
 
     provider: Ember.computed('id', function() {
@@ -33,9 +35,14 @@ export default Ember.Service.extend({
 
     signupUrl: Ember.computed('id', function() {
         const query = Ember.$.param({
-            campaign: `${this.get('id')}-preprints`
+            campaign: `${this.get('id')}-preprints`,
+            next: window.location.href
         });
 
         return `${config.OSF.url}register?${query}`;
+    }),
+
+    redirectUrl: Ember.computed('isProvider', function() {
+        return this.get('isProvider') ? window.location.href : null;
     }),
 });

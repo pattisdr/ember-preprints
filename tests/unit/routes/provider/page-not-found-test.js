@@ -1,8 +1,11 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:reroute-guid', 'Unit | Route | reroute guid', {
+moduleFor('route:provider/page-not-found', 'Unit | Route | provider/page not found', {
   // Specify the other units that are required for this test.
-  needs: ['service:metrics']
+    needs: [
+        'service:metrics',
+        'service:theme'
+    ]
 });
 
 test('it exists', function(assert) {
