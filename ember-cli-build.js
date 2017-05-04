@@ -61,7 +61,6 @@ module.exports = function(defaults) {
             includePaths: [
                 'node_modules/ember-osf/addon/styles',
                 'bower_components/bootstrap-sass/assets/stylesheets',
-                'bower_components/osf-style/sass',
                 'bower_components/hint.css'
             ]
         },
@@ -183,7 +182,7 @@ module.exports = function(defaults) {
     app.import({
         test: path.join(app.bowerDirectory, 'ember/ember-template-compiler.js')
     });
-    
+
     // Import component styles from addon
     app.import('vendor/assets/ember-osf.css');
 
