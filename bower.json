@@ -4,7 +4,7 @@
     "ember": "2.7.0",
     "ember-cli-shims": "0.1.3",
     "ember-qunit-notifications": "0.1.0",
-    "osf-style": "https://github.com/pattisdr/osf-style.git#83be4813abf9184c59d5001d17634c97cc5b811c",
+    "osf-style": "https://github.com/pattisdr/osf-style.git#62ad27ae9aed8abc89a38036ee1424f24dd233e3",
     "font-awesome": "4.6.3",
     "dropzone": "4.3.0",
     "bootstrap-sass": "3.3.6",
